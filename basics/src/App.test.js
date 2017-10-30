@@ -37,7 +37,31 @@ describe('App', () => {
   it('button should be disabled', () => {
     const button = wrapper.find('button').first();
     expect(
-        button.props().disabled
+      button.props().disabled
     ).toBe(true);
+  });
+
+  describe('The user populates the input', () => {
+    const item = 'Vancouver';
+    // setup context
+    beforeEach(() => {
+      const input = wrapper.find('input').first();
+      input.simulate('change', {
+         target: {value: item}
+      })
+    });
+
+    it('should update the state property `item`', () => {
+      expect(
+        wrapper.state().item
+      ).toEqual(item);
+    });
+
+    it('should enable button', () => {
+      const button = wrapper.find('button').first();
+      expect(
+        button.props().disabled
+      ).toBe(false);
+    });
   });
 })
