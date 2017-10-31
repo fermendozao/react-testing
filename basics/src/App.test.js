@@ -63,5 +63,58 @@ describe('App', () => {
         button.props().disabled
       ).toBe(false);
     });
+
+    describe('and then clears the input', () => {
+      beforeEach(() => {
+        const input = wrapper.find('input').first();
+        input.simulate('change', {
+          target: {value: ''}
+        })
+      });
+
+      it('should disable `button`', () => {
+        const button = wrapper.find('button').first();
+        expect(
+          button.props().disabled
+        ).toBe(true);
+      });
+    });
+
+    describe('and the submits the form', () => {
+      beforeEach(() => {
+        const form = wrapper.find('form').first();
+        form.simulate('submit', {
+          preventDefault: () => {}
+        });
+      });
+
+      it('should add item to the state items', () => {
+        expect(
+          wrapper.state().items
+        ).toContain(item)
+      });
+
+      it('should clear the input field', () => {
+        const input = wrapper.find('input').first();
+        expect(
+          input.props().value
+        ).toEqual('')
+      });
+
+      it('should render the item in the table', () => {
+        expect(
+          wrapper.containsMatchingElement(
+            <td>{item}</td>
+          )
+        ).toBe(true);
+      });
+
+      it('should disable the submit button', () => {
+        const button = wrapper.find('button').first();
+        expect(
+          button.props().disabled
+        ).toBe(true);
+      })
+    });
   });
 })
